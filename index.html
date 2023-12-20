@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Terminal Website</title>
+    <style>
+      body {
+        font-family: 'Source Code Pro', monospace;
+        font-weight: 200;
+        color: #fff;
+		background-color: #000;
+        margin: 0;
+        overflow: hidden
+		width: 0;
+		height: 0;
+      }
+
+      #terminal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        box-sizing: border-box
+      }
+
+      #output {
+        flex-grow: 1;
+        overflow-y: auto;
+        white-space: pre-wrap
+      }
+
+      #input-line {
+        display: flex;
+        margin-top: 5px
+      }
+
+      #prompt {
+        color: #0f0;
+        margin-right: 5px
+      }
+
+      #input {
+        flex-grow: 1;
+        background-color: transparent;
+        border: none;
+        outline: 0;
+        color: #fff
+      }
+    </style>
+  </head>
+    <div id="terminal">
+	    <img src="bee-removebg-preview.png" style="height:50px;width:50px">
+
+      <div id="output">
+        <br>
+        <p>this is my portfolio. type 'help' or a command to get started.</p>
+      </div>
+      <div id="input-line">
+        <div id="prompt">root@hashbastet:~#</div>
+        <input id="input" autocomplete="off" autofocus onkeydown="handleInput(event)">
+      </div>
+    </div>
+  </body>
+  <script>
+    const outputDiv = document.getElementById('output');
+    const inputElement = document.getElementById('input');
+
+    function handleInput(event) {
+      if (event.key === 'Enter') {
+        const inputText = inputElement.value.trim().toLowerCase();
+        processCommand(inputText);
+        inputElement.value = '';
+      }
+    }
+
+    function processCommand(command) {
+      switch (command) {
+        case 'help':
+          showHelp();
+          break;
+        case 'color':
+          changeBackgroundColor();
+          break;
+        case 'textcolor':
+          changeTextColor();
+          break;
+        case 'time':
+          displayEasternTime();
+          break;
+        case 'projects':
+          displayProjects();
+          break;
+        case 'skills':
+          displaySkills();
+          break;
+        case 'education':
+          displayEducation();
+          break;
+        case 'contact':
+          displayContact();
+          break;
+        case 'about':
+          displayAbout();
+          break;
+        case 'txt-color':
+          changeTextColor();
+          break;
+        case 'font-size':
+          changeFontSize();
+          break;
+        case 'portfolio-help':
+          showPortfolioHelp();
+          break;
+        case 'aesthetic-help':
+          showAestheticHelp();
+          break;
+        case 'information-help':
+          showInformationHelp();
+          break;
+        case 'contact-help':
+          showContactHelp();
+          break;
+        case 'fun-help':
+          showFunHelp();
+          break;
+        case 'clear':
+          clearOutput();
+          displayOutput("");
+          break;
+        case 'calculator':
+          launchCalculator();
+          break;
+        case 'instagram':
+          openInstagram();
+          break;
+        default:
+          displayOutput(`Unknown command: "${command}", try help`);
+      }
+    }
+
+    function showHelp() {
+      const commands = ['commands available to your user level:', '  help - show this help message', '  clear - clear the terminal output', '  portfolio-help - commands related to portfolio', '  aesthetic-help - commands related to aesthetics', '  information-help - commands related to information', '  contact-help - commands related to contact', ];
+      displayOutput(commands.join('\n'));
+    }
+
+    function showPortfolioHelp() {
+      const portfolioCommands = ['education - display education details', 'projects - display featured projects', 'skills - display skills', 'about - display a brief introduction'];
+      displayOutput(portfolioCommands.join('\n'));
+    }
+
+    function showAestheticHelp() {
+      const aestheticCommands = ['txt-color - change text color', 'font-size - change font size'];
+      displayOutput(aestheticCommands.join('\n'));
+    }
+
+    function showInformationHelp() {
+      const informationCommands = ['time - display current time in my timezone', 'help - show this help message'];
+      displayOutput(informationCommands.join('\n'));
+    }
+
+    function showContactHelp() {
+      const contactCommands = ['contact - display contact information', 'instagram - open Instagram profile'];
+      displayOutput(contactCommands.join('\n'));
+    }
+
+    function changeTextColor() {
+      const newColor = prompt('Enter a new text color (e.g., "white", "#000000"):');
+      if (newColor !== null) {
+        document.body.style.color = newColor;
+        displayOutput(`Text color changed to ${newColor}`);
+      }
+    }
+
+    function changeFontSize() {
+      const newSize = prompt('Enter a new font size (e.g., "16px"):');
+      if (newSize !== null) {
+        document.body.style.fontSize = newSize;
+        displayOutput(`Font size changed to ${newSize}`);
+      }
+    }
+
+    function openInstagram() {
+      const instagramLink = 'https://www.instagram.com/hashbastet';
+      const openLink = confirm(`Open Instagram profile: ${instagramLink}?`);
+      if (openLink) {
+        window.open(instagramLink, '_blank');
+      }
+    }
+
+
+    function displayEasternTime() {
+      const now = new Date();
+      const options = {
+        timeZone: 'America/New_York'
+      };
+      const easternTime = now.toLocaleTimeString('en-US', options);
+      const easternTimeZone = isEasternDaylightTime(now) ? 'EDT' : 'EST';
+      displayOutput(`Current Eastern Time: ${easternTime} ${easternTimeZone}`);
+    }
+
+    function isEasternDaylightTime(date) {
+      const januaryOffset = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
+      const julyOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
+      return Math.min(januaryOffset, julyOffset) !== date.getTimezoneOffset();
+    }
+
+    function displayProjects() {
+      const projects = ['Nothing... for now.'],
+        // Add more projects as needed
+      ];
+      displayOutput('Featured Projects:\n' + projects.join('\n'));
+    }
+
+    function displaySkills() {
+      const skills = ['- Javascript', '- Java', '- Python', '- HTML', '- CSS', '- Designwork', '- Painting', '- Stencils', '- Sketching', '- Conceptualization',
+        // Add more skills as needed
+      ];
+      displayOutput('Skills:\n' + skills.join('\n'));
+    }
+
+    function displayEducation() {
+      const educationInfo = ['- Emmaus High School (\'24)','- Unknown University (\'29)'];
+      displayOutput('Education:\n' + educationInfo.join('\n'));
+    }
+
+    function displayContact() {
+      const contactInfo = ['- email: hashbastet@protonmail.com', '- github: github.com/hashbastet', '- instagram: instagram.com/hashbastet'
+        // Add more contact details as needed
+      ];
+      displayOutput('Contact Information:\n' + contactInfo.join('\n'));
+    }
+
+    function displayAbout() {
+      const aboutText = 'I\'m a cybersecurity student with a focus on learning the basic and advanced principles of ethical hacking.';
+      displayOutput(aboutText);
+    }
+
+    function displayOutput(output) {
+      outputDiv.innerHTML += `
+								<br>
+									<div>${output}</div>`;
+      outputDiv.scrollTop = outputDiv.scrollHeight;
+    }
+
+    function clearOutput() {
+      outputDiv.innerHTML = '';
+    }
+  </script>
+</html>

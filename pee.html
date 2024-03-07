@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RADIUS v0.1 - Monitoring System</title>
+  <script src="https://cdn.rawgit.com/bernii/gauge.js/master/dist/gauge.min.js"></script>
+  <style>
+    body {
+      gap: 2%;
+      margin: 5%;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .data-container {
+      border: 0px solid #000;
+      border-radius: 15px;
+      background-color: #dfdfdf;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5%;
+      width: 80%;
+      margin: auto;
+      padding: 5%;
+      text-align: center;
+    }
+
+    .gauge-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5%;
+      width: 80%;
+      margin-top: 20px;
+    }
+
+    .gauge {
+      border: 0px solid #000;
+      border-radius: 15px;
+      background-color: #dfdfdf;
+      width: 100%;
+      padding: 2.5%;
+      margin: 2.5%;
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 15px;
+      margin-top: 10px;
+    }
+    
+  </style>
+</head>
+<body>
+<div>
+</div>
+<!-- Data Container -->
+<div class="data-container"  style="gap: 5%;">
+  <div style="gap: 5%;">
+    <h2>pH Scale</h2>
+    <canvas id="gauge1" width="300" height="300"></canvas>
+  </div>
+  <div style="gap: 5%;">
+    <h2>Temperature</h2>
+    <canvas id="gauge2" width="300" height="300"></canvas>
+  </div>
+  <div style="gap: 5%;">
+    <h2>Humidity</h2>
+    <canvas id="gauge3" width="300" height="300"></canvas>
+  </div>
+  <div style="gap: 5%;">
+    <h2>Conductivity</h2>
+    <canvas id="gauge4" width="300" height="300"></canvas>
+  </div>
+</div>
+
+<!-- Date and Time -->
+<div class="data-container">
+  <div class="gauge">
+    <h2>Welcome back. The current date is:</h2>
+    <p id="current-time"></p>
+    <img src="https://placekitten.com/300/200" alt="Place Kitten">
+  </div>
+    <div class="gauge">
+        <h1 class="timer" id="timer1"></h1>
+    <div class="reset-button" onclick="resetTimer('timer1')">RESET T1</div>
+
+    <h1 class="timer" id="timer2"></h1>
+    <div class="reset-button" onclick="resetTimer('timer2')">RESET T2</div>
+
+    <h1 class="timer" id="timer3"></h1>
+    <div class="reset-button" onclick="resetTimer('timer3')">RESET T3</div>
+</div>
+
+<script>
+  // Update current time every second
+  setInterval(function() {
+    var currentTime = new Date();
+    document.getElementById('current-time').innerHTML = currentTime.toLocaleString();
+  }, 1000);
+</script>
+
+</body>
+</html>
+
+
+</div>
+<script>
+  // Gauge 1
+    var opts1 = {
+    angle: 0,
+    lineWidth: 0.19,
+    radiusScale: 0.5,
+staticZones: [
+  {strokeStyle: "#ff6961", min: 0, max: 4.5},     // Red from 0 to 5.5
+  {strokeStyle: "#fdfd96", min: 4.5, max: 5.5},   // Yellow
+  {strokeStyle: "#77dd77", min: 5.5, max: 6.5},   // Green
+  {strokeStyle: "#fdfd96", min: 6.5, max: 7.5},   // Yellow
+  {strokeStyle: "#ff6961", min: 7.5, max: 14.0}   // Red from 7.5 to 14.0
+],
+    pointer: {
+      length: 0.5,
+      strokeWidth: 0.031,
+      color: '#000000'
+    },
+    limitMax: false,
+    limitMin: false,
+    strokeColor: '#EEEEEE',
+    generateGradient: true,
+    highDpiSupport: true,
+    
+  };
+  var target1 = document.getElementById('gauge1');
+  var gauge1 = new Gauge(target1).setOptions(opts1);
+  gauge1.maxValue = 14;
+  gauge1.setMinValue(0);
+  gauge1.animationSpeed = 25;
+
+  // Gauge 2
+    var opts2 = {
+    angle: 0,
+    lineWidth: 0.19,
+    radiusScale: 0.5,
+staticZones: [
+   {strokeStyle: "#ff6961", min: 0, max: 65}, // Red from 100 to 130
+   {strokeStyle: "#fdfd96", min: 65, max: 70}, // Yellow
+   {strokeStyle: "#77dd77", min: 70, max: 80}, // Green
+   {strokeStyle: "#fdfd96", min: 80, max: 85}, // Yellow
+   {strokeStyle: "#ff6961", min: 85, max: 100}  // Red
+],
+
+    pointer: {
+      length: 0.5,
+      strokeWidth: 0.031,
+      color: '#000000'
+    },
+    limitMax: false,
+    limitMin: false,
+    strokeColor: '#EEEEEE',
+    generateGradient: true,
+    highDpiSupport: true,
+    
+  };
+  var target2 = document.getElementById('gauge2');
+  var gauge2 = new Gauge(target2).setOptions(opts2);
+  gauge2.maxValue = 100;
+  gauge2.setMinValue(0);
+  gauge2.animationSpeed = 25;
+
+
+  // Gauge 3
+    var opts3 = {
+    angle: 0,
+    lineWidth: 0.19,
+    radiusScale: 0.5,
+staticZones: [
+   {strokeStyle: "#ff6961", min: 0, max: 130}, // Red from 100 to 130
+   {strokeStyle: "#fdfd96", min: 130, max: 150}, // Yellow
+   {strokeStyle: "#77dd77", min: 150, max: 220}, // Green
+   {strokeStyle: "#fdfd96", min: 220, max: 260}, // Yellow
+   {strokeStyle: "#ff6961", min: 260, max: 300}  // Red
+],
+
+    pointer: {
+      length: 0.5,
+      strokeWidth: 0.031,
+      color: '#000000'
+    },
+    limitMax: false,
+    limitMin: false,
+    strokeColor: '#EEEEEE',
+    generateGradient: true,
+    highDpiSupport: true,
+    
+  };
+  var target3 = document.getElementById('gauge3');
+  var gauge3 = new Gauge(target3).setOptions(opts3);
+  gauge3.maxValue = 300;
+  gauge3.setMinValue(0);
+  gauge3.animationSpeed = 25;
+
+
+  // Gauge 4
+    var opts4 = {
+    angle: 0,
+    lineWidth: 0.19,
+    radiusScale: 0.5,
+staticZones: [
+   {strokeStyle: "#ff6961", min: 0, max: 130}, // Red from 100 to 130
+   {strokeStyle: "#fdfd96", min: 130, max: 150}, // Yellow
+   {strokeStyle: "#77dd77", min: 150, max: 220}, // Green
+   {strokeStyle: "#fdfd96", min: 220, max: 260}, // Yellow
+   {strokeStyle: "#ff6961", min: 260, max: 300}  // Red
+],
+
+    pointer: {
+      length: 0.5,
+      strokeWidth: 0.031,
+      color: '#000000'
+    },
+    limitMax: false,
+    limitMin: false,
+    strokeColor: '#EEEEEE',
+    generateGradient: true,
+    highDpiSupport: true,
+    
+  };
+  var target4 = document.getElementById('gauge4');
+  var gauge4 = new Gauge(target4).setOptions(opts4);
+  gauge4.maxValue = 300;
+  gauge4.setMinValue(0);
+  gauge4.animationSpeed = 25;
+  
+  setInterval(() => {
+  gauge1.set(Math.floor(Math.random() * 14) + 1);
+  gauge2.set(Math.floor(Math.random() * 100) + 1);
+  gauge3.set(Math.floor(Math.random() * 300) + 1);
+  gauge4.set(Math.floor(Math.random() * 300) + 1);
+}, 1000);
+   
+    
+    function formatTime(duration) {
+        const days = Math.floor(duration / (24 * 60 * 60));
+        const hours = Math.floor((duration % (24 * 60 * 60)) / (60 * 60));
+        const minutes = Math.floor((duration % (60 * 60)) / 60);
+        const seconds = Math.floor(duration % 60);
+        const milliseconds = (duration % 1).toFixed(1).slice(2);
+        return `${days}:${hours}:${minutes}:${seconds}.${milliseconds}`;
+    }
+
+    let startDate = {}; // Declare startDate globally
+
+    // Function to update timers
+    function updateTimers() {
+        const timer1 = document.getElementById("timer1");
+        const timer2 = document.getElementById("timer2");
+        const timer3 = document.getElementById("timer3");
+
+        function updateTimerElement(timerElement, additionalSeconds) {
+            const currentDate = new Date();
+            const elapsedTime = (currentDate - startDate[timerElement.id]) / 1000 + additionalSeconds; // Elapsed time in seconds
+
+            timerElement.innerHTML = formatTime(elapsedTime);
+        }
+
+        setInterval(() => {
+            updateTimerElement(timer1, 0);
+        }, 100);
+
+        setInterval(() => {
+            updateTimerElement(timer2, 0);
+        }, 100);
+
+        setInterval(() => {
+            updateTimerElement(timer3, 0);
+        }, 100);
+    }
+
+    // Function to reset a timer
+    function resetTimer(timerId) {
+        const timerElement = document.getElementById(timerId);
+        startDate[timerId] = new Date(); // Reset the start date for the specific timer
+        timerElement.innerHTML = formatTime(0); // Set the timer display to 0
+    }
+
+    // Function to set indicator position
+    function setIndicatorPosition(parameter, value, maxValue) {
+        const indicator = document.getElementById(`${parameter.toLowerCase()}-indicator`);
+        const scaleWidth = indicator.parentElement.offsetWidth;
+        const position = (value / maxValue) * (scaleWidth - indicator.offsetWidth); // Adjusted calculation to prevent overflow
+        indicator.style.transform = `translateX(${position}px)`;
+    }
+
+    // Example usage:
+    const maxValue = 100; // Set the maximum value for the scale
+
+    setInterval(() => {
+        // Set random values for testing
+        const temperatureValue = Math.random() * maxValue;
+        const humidityValue = Math.random() * maxValue;
+        const phValue = Math.random() * maxValue;
+        const conductivityValue = Math.random() * maxValue;
+
+        setIndicatorPosition('Temperature', temperatureValue, maxValue);
+        setIndicatorPosition('Humidity', humidityValue, maxValue);
+        setIndicatorPosition('pH', phValue, maxValue);
+        setIndicatorPosition('Conductivity', conductivityValue, maxValue);
+    }, 1000); // Update every second
+
+    updateTimers(); // Start timers
+</script>
+
+<!-- ... (rest of your HTML code) ... -->
+
+
+</body>
+
+</html>
+
+</body>
+</html>
+
